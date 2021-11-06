@@ -36,7 +36,7 @@
                 <button id="selectPhone" class="btn-select btn-selected">Số điện thoại</button>
                 <button id="selectEmail" class="btn-select mt-3">Email</button>
                 <p class="mt-5">
-                    <router-link to="/login" style="position: absolute; bottom: 20px">Quay lại</router-link>
+                    <router-link to="/dang-nhap" style="position: absolute; bottom: 20px">Quay lại</router-link>
                 </p>
             </div>
         </div>

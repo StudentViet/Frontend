@@ -28,12 +28,14 @@
                                 <i class="fa fa-facebook-square" style="font-size: 20px; margin-right: 5px;"></i>
                                 <span class="font-bold">Đăng ký / Đăng nhập bằng facebook</span>
                             </button>
-                            <p class="text-center colorGray" style="font-size: 15px;"> Quên mật khẩu ? <router-link to="/forgotpassword" class="font-bold colorPrimary">Lấy lại mật khẩu</router-link> </p>
-                            <p class="text-center colorGray" style="font-size: 15px;"> Chưa có tài khoản ? <router-link to="/register" class="font-bold colorPrimary">Đăng ký</router-link> </p>
+                            <p class="text-center colorGray" style="font-size: 15px;"> Quên mật khẩu ? <router-link to="/quen-mat-khau" class="font-bold colorPrimary">Lấy lại mật khẩu</router-link> </p>
+                            <p class="text-center colorGray" style="font-size: 15px;"> Chưa có tài khoản ? <router-link to="/dang-ky" class="font-bold colorPrimary">Đăng ký</router-link> </p>
                         </div>
                     </form>
                 </div>
-                <div class="col-8"></div>
+                <div class="col-5">
+                    <img src="../../assets/images/login.png" height="500"/>
+                </div>
             </div>
         </div>
     </div>
@@ -46,5 +48,27 @@
 </script>
 
 <style>
+
+#login {
+    overflow-x: hidden;
+}
+
+#login img {
+    pointer-events: none;
+}
+
+@media screen and (max-width: 820px) {
+    #login img {
+        display: none;
+    }
+
+    #login .row {
+        display: block !important;
+    }
+
+    #login .col-5 {
+        width: 100% !important;
+    }
+}
 
 </style>

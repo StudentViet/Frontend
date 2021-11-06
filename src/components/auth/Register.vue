@@ -131,7 +131,7 @@
                     <div class="col-6 mt-4">
                         <select v-model="role" class="form-select" required>
                             <option value="">Vai trò của tôi</option>
-                            <option value="0">Tôi là học sinh</option>
+                            <option value="2">Tôi là học sinh</option>
                             <option value="1">Tôi là giáo viên</option>
                         </select>
                     </div>
@@ -144,7 +144,7 @@
                             <i class="fa fa-facebook-square" style="font-size: 20px; margin-right: 5px;"></i>
                             <span class="font-bold">Đăng ký / Đăng nhập bằng facebook</span>
                         </button>
-                        <p class="text-center colorGray" style="font-size: 15px;"> Đã có tài khoản ? <router-link to="/login" class="font-bold colorPrimary">Đăng nhập</router-link> </p>
+                        <p class="text-center colorGray" style="font-size: 15px;"> Đã có tài khoản ? <router-link to="/dang-nhap" class="font-bold colorPrimary">Đăng nhập</router-link> </p>
                     </div>
                 </form>
             </div>
