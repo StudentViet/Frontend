@@ -1,12 +1,37 @@
 <template>
-        <div id="app">
-                <router-view></router-view>
-        </div>
+    <div id="app">
+        <Loader v-if="start"/>
+        <router-view></router-view>
+        <vue-snotify></vue-snotify>
+    </div>
 </template>
 
 <script>
-export default {
+import Loader from '@/components/loading/loading-v1.vue';
 
+export default {
+    data() {
+        return {
+            start: true
+        }
+    },
+    components: {
+        Loader
+    },
+    watch: {
+        '$route' () {
+            this.displayLoader();
+        }
+    },
+    methods: {
+        displayLoader() {
+            this.start = true;
+            setTimeout(() => this.start = false, 1000);
+        }
+    },
+    mounted() {
+        this.displayLoader();
+    }
 }
 </script>
 
