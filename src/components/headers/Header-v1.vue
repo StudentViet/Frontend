@@ -61,6 +61,7 @@
 
 nav {
     padding: 20px;
+    z-index: 100;
 }
 
 .bg-light {

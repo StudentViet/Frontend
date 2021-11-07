@@ -221,7 +221,9 @@
                 }
 
                 const data = await AuthController.register(this.fullname, this.schoolName, this.schoolClass, this.birthday, this.phone, this.role, this.password, this.confirmPassword);
-                console.log(data);
+
+                if (data.isError) this.$snotify.error(data.message);
+                else this.$snotify.success(data.message);
             }
         }
     }

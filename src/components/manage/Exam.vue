@@ -7,24 +7,10 @@
                         <img class="text-center" src="../../assets/images/empty.png" height="250"/>
                         <h2 class="colorGray text-center mt-4">Bạn chưa tham gia lớp học nào</h2>
                         <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#joinClassModal">
-                            <i class="fa fa-plus" style="font-size: 20px"></i>
+                            <i class="fa fa-plus"></i>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-6">
-                    <h2 class="colorPrimary font-bold">THỜI KHÓA BIỂU</h2>
-                    <p class="colorGray text-center mt-4" style="font-size: 20px">Hãy tham gia lớp học để nhận được thời khóa biểu</p>
-                    <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fa fa-plus" style="font-size: 20px"></i>
-                    </div>
-                </div>
-                <div class="col-6" style="border-left: 1px solid gray">
-                    <h2 class="colorPrimary font-bold">BÀI TẬP</h2>
-                    <p class="colorGray text-center mt-3" style="font-size: 20px">Hãy tham gia lớp học để nhận được bài tập</p>
-                    <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fa fa-plus" style="font-size: 20px"></i>
-                    </div>
-                </div> -->
             </div>
         </div>
 

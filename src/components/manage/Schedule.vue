@@ -134,6 +134,7 @@
     .day a {
         background: rgb(30, 136, 229) !important;
         font-size: 18px;
+        cursor: pointer;
     }
     .day h5 {
         background-color: #f8f9fa;
@@ -160,6 +161,7 @@
         background: rgb(30, 136, 229) !important;
         font-size: 18px;
         margin-top: 15px !important;
+        cursor: pointer;
     }
 
     .event-none {
