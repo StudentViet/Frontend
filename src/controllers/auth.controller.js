@@ -3,20 +3,24 @@ import axios from 'axios';
 const api = 'https://api.studentviet.edu.vn/api/auth';
 
 class AuthController {
-    // static login(email, password) {
-    //
-    // }
+    static login(email, password) {
+        return axios.post(`${api}/login`, {
+            email,
+            password,
+        });
+    }
 
-    static register(fullname, schoolName, schoolClass, birthday, phone, role, password, confirmPassword) {
+    static register(name, email, phone, password, password_confirmation, schoolName, schoolClass, birthday, role) {
         return axios.post(`${api}/register`, {
-            fullname,
+            name,
+            email,
+            phone,
+            password,
+            password_confirmation,
             schoolName,
             schoolClass,
             birthday,
-            phone,
-            role,
-            password,
-            confirmPassword
+            role
         });
     }
 }

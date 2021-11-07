@@ -3,19 +3,13 @@
         <div class="container mt-3">
             <div class="container">
                 <a href="#">
-                    <h5 class="colorPrimary">Chào mừng bạn đến với <span class="colorPrimary font-bold">StudentViet</span> ! </h5>
+                    <h5 class="colorPrimary"> Chào mừng bạn đến với <span class="colorPrimary font-bold">StudentViet</span> ! </h5>
                 </a>
                 <form @submit.prevent="Register()">
                     <div class="row">
                         <div class="col-6">
                             <div class="group">
-                                <input
-                                    v-model="fullname"
-                                    type="text"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập họ và tên đầy đủ')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="fullname" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập họ và tên đầy đủ')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Họ và Tên</label>
@@ -23,13 +17,7 @@
                         </div>
                         <div class="col-6">
                             <div class="group ml-5">
-                                <input
-                                    v-model="email"
-                                    type="text"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập email đầy đủ')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="email" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập email đầy đủ')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Email</label>
@@ -39,14 +27,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="group">
-                                <input
-                                    v-model="phone"
-                                    type="number"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập đúng số điện thoại')"
-                                    oninput="this.setCustomValidity(''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                    maxLength="10"
-                                />
+                                <input v-model="phone" type="number" required oninvalid="this.setCustomValidity('Vui lòng nhập đúng số điện thoại')" oninput="this.setCustomValidity(''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxLength="10" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Số điện thoại</label>
@@ -54,14 +35,7 @@
                         </div>
                         <div class="col-6">
                             <div class="group ml-5">
-                                <input
-                                    v-model="birthday"
-                                    type="date"
-                                    id="datePicker"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập ngày sinh')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="birthday" type="date" id="datePicker" required oninvalid="this.setCustomValidity('Vui lòng nhập ngày sinh')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Ngày sinh</label>
@@ -71,13 +45,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="group">
-                                <input
-                                    v-model="schoolName"
-                                    type="text"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập tên trường')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="schoolName" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập tên trường')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Tên trường học</label>
@@ -85,13 +53,7 @@
                         </div>
                         <div class="col-6">
                             <div class="group ml-5">
-                                <input
-                                    v-model="schoolClass"
-                                    type="text"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng nhập lớp')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="schoolClass" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập lớp')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Lớp</label>
@@ -101,13 +63,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="group">
-                                <input
-                                    v-model="password"
-                                    type="password"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng đặt mật khẩu')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="password" type="password" required oninvalid="this.setCustomValidity('Vui lòng đặt mật khẩu')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Mật khẩu</label>
@@ -115,13 +71,7 @@
                         </div>
                         <div class="col-6">
                             <div class="group ml-5">
-                                <input
-                                    v-model="confirmPassword"
-                                    type="password"
-                                    required
-                                    oninvalid="this.setCustomValidity('Vui lòng xác nhận mật khẩu')"
-                                    oninput="this.setCustomValidity('')"
-                                />
+                                <input v-model="confirmPassword" type="password" required oninvalid="this.setCustomValidity('Vui lòng xác nhận mật khẩu')" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Xác nhận mật khẩu</label>
@@ -139,103 +89,95 @@
                         <button type="submit" class="btn-primary">
                             <span class="font-bold">Đăng ký</span>
                         </button>
-                        <p class="text-center colorGray" style="font-size: 14px;">Hoặc</p>
+                        <p class="text-center colorGray" style="font-size: 14px">Hoặc</p>
                         <button type="button" class="btn-primary">
-                            <i class="fa fa-facebook-square" style="font-size: 20px; margin-right: 5px;"></i>
+                            <i class="fa fa-facebook-square" style="font-size: 20px; margin-right: 5px"></i>
                             <span class="font-bold">Đăng ký / Đăng nhập bằng facebook</span>
                         </button>
-                        <p class="text-center colorGray" style="font-size: 15px;"> Đã có tài khoản ? <router-link to="/dang-nhap" class="font-bold colorPrimary">Đăng nhập</router-link> </p>
+                        <p class="text-center colorGray" style="font-size: 15px"> Đã có tài khoản ? <router-link to="/dang-nhap" class="font-bold colorPrimary">Đăng nhập</router-link>
+                        </p>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </template>
-
 <script>
-    import AuthController from '../../controllers/auth.controller.js';
+    import AuthController from "../../controllers/auth.controller.js";
     export default {
-        name: 'Register',
+        name: "Register",
         data() {
             return {
-                fullname: '',
-                email: '',
-                phone: '',
-                birthday: '',
-                schoolName: '',
-                schoolClass: '',
-                password: '',
-                confirmPassword: '',
-                role: ''
-            }
+                fullname: "",
+                email: "",
+                phone: "",
+                birthday: "",
+                schoolName: "",
+                schoolClass: "",
+                password: "",
+                confirmPassword: "",
+                role: "",
+                errors: {},
+            };
         },
         watch: {
-            '$route' () {
-                Date.prototype.toDateInputValue = (function() {
+            $route() {
+                Date.prototype.toDateInputValue = function() {
                     let local = new Date(this);
                     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                    return local.toJSON().slice(0,10);
-                });
-
-                document.getElementById('datePicker').value = new Date().toDateInputValue();
-            }
+                    return local.toJSON().slice(0, 10);
+                };
+                document.getElementById("datePicker").value = new Date().toDateInputValue();
+            },
         },
         mounted() {
-            Date.prototype.toDateInputValue = (function() {
+            Date.prototype.toDateInputValue = function() {
                 let local = new Date(this);
                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                return local.toJSON().slice(0,10);
-            });
-
-            document.getElementById('datePicker').value = new Date().toDateInputValue();
+                return local.toJSON().slice(0, 10);
+            };
+            document.getElementById("datePicker").value = new Date().toDateInputValue();
         },
         methods: {
             ValidateEmail(email) {
                 const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
                 return regex.test(String(email).toLowerCase());
             },
             async Register() {
-                if (
-                    this.fullname == ''                      ||
-                    this.schoolName == ''                    ||
-                    this.schoolClass == ''                   ||
-                    this.birthday == ''                      ||
-                    this.phone == ''                         ||
-                    this.role == ''                         ||
-                    this.password == ''                      ||
-                    this.confirmPassword == ''
-                ) {
-                    this.$snotify.error('Vui lòng nhập đầy đủ các thông tin.');
+                if (this.fullname == "" || this.schoolName == "" || this.schoolClass == "" || this.birthday == "" || this.phone == "" || this.role == "" || this.password == "" || this.confirmPassword == "") {
+                    this.$snotify.error("Vui lòng nhập đầy đủ thông tin");
                     return;
                 }
-
                 if (!this.ValidateEmail(this.email)) {
-                    this.$snotify.error('Email không hợp lệ.');
+                    this.$snotify.error("Định dạng email của bạn không hợp lệ");
                     return;
                 }
-
                 if (this.password !== this.confirmPassword) {
-                    this.$snotify.error('Xác nhận mật khẩu không thành công.');
+                    this.$snotify.error("Mật khẩu bạn nhập không khớp");
                     return;
                 }
 
-                const data = await AuthController.register(this.fullname, this.schoolName, this.schoolClass, this.birthday, this.phone, this.role, this.password, this.confirmPassword);
+                const response = await AuthController.register(this.fullname, this.email, this.phone, this.password, this.confirmPassword, this.schoolName, this.schoolClass, this.birthday, this.role);
 
-                if (data.isError) this.$snotify.error(data.message);
-                else this.$snotify.success(data.message);
-            }
+                if (!response.data.isError) {
+                    this.$snotify.success("Đăng ký thành công");
+                    this.$router.push({ name: 'login'});
+                    return;
+                }
+
+                this.errors = response.data.messages;
+            },
+        },
+    };
+</script>
+<style>
+    @media screen and (max-width: 320px) {
+        #register .row {
+            display: block !important;
+        }
+
+        #register .col-6 {
+            width: 100% !important;
         }
     }
-</script>
-
-<style>
-@media screen and (max-width: 320px) {
-    #register .row {
-        display: block !important;
-    }
-    #register .col-6 {
-        width: 100% !important;
-    }
-}
 </style>
