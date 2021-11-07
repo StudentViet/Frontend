@@ -153,6 +153,7 @@
 </template>
 
 <script>
+    import AuthController from '../../controllers/auth.controller.js';
     export default {
         name: 'Register',
         data() {
@@ -194,19 +195,14 @@
 
                 return regex.test(String(email).toLowerCase());
             },
-            ValidateInput(input) {
-                const regex = /^[a-zA-Z0-9]+$/;
-
-                return regex.test(String(input).toLowerCase());
-            },
-            Register() {
+            async Register() {
                 if (
-                    !this.ValidateInput(this.fullname)       ||
-                    !this.ValidateInput(this.schoolName)     ||
-                    !this.ValidateInput(this.schoolClass)    ||
+                    this.fullname == ''                      ||
+                    this.schoolName == ''                    ||
+                    this.schoolClass == ''                   ||
                     this.birthday == ''                      ||
                     this.phone == ''                         ||
-                    this.roles == ''                         ||
+                    this.role == ''                         ||
                     this.password == ''                      ||
                     this.confirmPassword == ''
                 ) {
@@ -223,6 +219,9 @@
                     this.$snotify.error('Xác nhận mật khẩu không thành công.');
                     return;
                 }
+
+                const data = await AuthController.register(this.fullname, this.schoolName, this.schoolClass, this.birthday, this.phone, this.role, this.password, this.confirmPassword);
+                console.log(data);
             }
         }
     }

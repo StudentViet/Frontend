@@ -163,6 +163,10 @@ button {
     font-weight: 600 !important;
 }
 
+.font-inactive {
+    color: black;
+}
+
 .colorPrimary {
     color: #2f94c5;
 }

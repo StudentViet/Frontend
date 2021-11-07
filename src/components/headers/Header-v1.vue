@@ -3,24 +3,26 @@
         <div id="header">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a class="font-bold colorPrimary" href="#" style="font-size: 25px;">StudentViet</a>
+                    <router-link class="font-bold colorPrimary" to="/" style="font-size: 25px;"><img src="../../assets/logoNavbar.jpg" height="60"/></router-link>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="navbar-nav ms-auto">
-                            <ul class="d-flex">
-                                <div class="icon-btn">
-                                    <div class="amount">
-                                        <p>2</p>
-                                    </div>
-                                    <i class="fa fa-bell" style="font-size: 20px"></i>
+                        <ul class="nav navbar-nav mx-auto navbar-center">
+                            <li><router-link to="/quan-ly/" class="font-bold">BÀI TẬP</router-link></li>
+                            <li><router-link to="/quan-ly/thoi-khoa-bieu/" class="font-bold font-inactive">THỜI KHÓA BIỂU</router-link></li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <div class="icon-btn">
+                                <div class="amount">
+                                    <p>2</p>
                                 </div>
-                                <div class="icon-btn">
-                                    <i class="fa fa-gear" style="font-size: 20px"></i>
-                                </div>
-                            </ul>
-                        </div>
+                                <i class="ri-notification-3-fill"></i>
+                            </div>
+                            <div class="icon-btn">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -30,7 +32,28 @@
 
 <script>
     export default {
-        name: 'Header-v1'
+        name: 'Header-v1',
+        mounted() {
+            this.clickNavbar();
+        },
+        methods: {
+            clickNavbar() {
+                const exam = document.querySelectorAll('.navbar-center > li > a')[0];
+                const schedule = document.querySelectorAll('.navbar-center > li > a')[1];
+
+                exam.onclick = () => {
+                    if (!exam.classList.contains('font-inactive')) return;
+                    exam.classList.toggle('font-inactive');
+                    schedule.classList.toggle('font-inactive');
+                };
+
+                schedule.onclick = () => {
+                    if (!schedule.classList.contains('font-inactive')) return;
+                    exam.classList.toggle('font-inactive');
+                    schedule.classList.toggle('font-inactive');
+                };
+            }
+        }
     }
 </script>
 
@@ -82,6 +105,14 @@ nav {
     font-weight: bold;
     border-radius: 50%;
     transition: 0.2s;
+}
+
+.navbar-center li {
+    margin: 5px;
+}
+
+.navbar-center a {
+    font-size: 18px;
 }
 
 </style>
