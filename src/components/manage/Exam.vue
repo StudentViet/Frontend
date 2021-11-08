@@ -43,7 +43,34 @@
 
 <script>
     export default {
-        name: 'Exam'
+        name: 'Exam',
+        watch: {
+            '$route' () {
+                this.checkLogged();
+            }
+        },
+        methods: {
+            async checkLogged() {
+                const response = await this.$store.dispatch('getUser');
+
+                if (!response) {
+                    this.$router.push({
+                        name: "login"
+                    });
+                    return;
+                }
+
+                if (response.role_id == 1) {
+                    this.$router.push({
+                        name: "setting"
+                    });
+                    return;
+                }
+            }
+        },
+        mounted() {
+            this.checkLogged();
+        }
     }
 </script>
 

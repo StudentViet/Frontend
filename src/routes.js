@@ -12,6 +12,8 @@ import Manage from './components/manage/Manage.vue'
 
 import Exam from './components/manage/Exam.vue'
 
+import Setting from './components/manage/Setting.vue'
+
 import Schedule from './components/manage/Schedule.vue'
 
 import PageNotFound from './components/404.vue'
@@ -28,6 +30,7 @@ export const router = new VueRouter({
             children: [
                 { path: '/quan-ly/bai-tap', component: Exam, name: 'exam' },
                 { path: '/quan-ly/', component: Exam, name: 'exam' },
+                { path: '/quan-ly/giao-vien', component: Setting, name: 'setting' },
                 { path: '/quan-ly/thoi-khoa-bieu', component: Schedule, name: 'schedule' },
             ]
         },

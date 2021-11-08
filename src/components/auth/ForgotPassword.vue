@@ -69,18 +69,11 @@
                 this.$snotify.error(response.data.message);
             },
             async checkLogged() {
-                try {
-                    if (localStorage.getItem('accessToken') == '') return;
-                    var response = await AuthController.getUser();
-                } catch (err) {
-                    localStorage.setItem('accessToken', '');
-                }
-
+                const response = await this.$store.dispatch('getUser');
                 if (response) {
                     this.$router.push({
-                        name: (response.data.data.user.role_id == 1) ? "exam" : "/"
+                        name: (response.role_id == 2) ? "exam" : "/"
                     });
-                    this.$store.commit('setUser', response.data.data.user);
                 }
             }
         },

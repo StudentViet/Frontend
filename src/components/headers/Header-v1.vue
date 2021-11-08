@@ -19,8 +19,13 @@
                                 </div>
                                 <i class="ri-notification-3-fill"></i>
                             </div>
-                            <div class="icon-btn">
-                                <i class="ri-settings-5-fill"></i>
+                            <div class="dropdown">
+                                <div class="icon-btn" id="settingBtn">
+                                    <i class="ri-settings-5-fill"></i>
+                                </div>
+                                <ul class="dropdown-menu" id="dropdownOptions" aria-labelledby="dropdownOptions">
+                                    <li><a class="dropdown-item" style="color: red" @click="logout()">Đăng xuất</a></li>
+                                </ul>
                             </div>
                         </ul>
                     </div>
@@ -34,12 +39,13 @@
     export default {
         name: 'Header-v1',
         mounted() {
-            this.clickNavbar();
+            this.doFunctions();
         },
         methods: {
-            clickNavbar() {
+            doFunctions() {
                 const exam = document.querySelectorAll('.navbar-center > li > a')[0];
                 const schedule = document.querySelectorAll('.navbar-center > li > a')[1];
+                const settingBtn = document.querySelector('#settingBtn');
 
                 exam.onclick = () => {
                     if (!exam.classList.contains('font-inactive')) return;
@@ -52,6 +58,14 @@
                     exam.classList.toggle('font-inactive');
                     schedule.classList.toggle('font-inactive');
                 };
+
+                settingBtn.onclick = () => document.querySelector('#dropdownOptions').classList.toggle("dropdown-active");
+            },
+            logout() {
+                localStorage.setItem('accessToken', '');
+                this.$router.push({
+                    name: "login"
+                });
             }
         }
     }
@@ -109,11 +123,21 @@ nav {
 }
 
 .navbar-center li {
-    margin: 5px;
+    margin: 10px;
 }
 
 .navbar-center a {
     font-size: 18px;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .dropdown-menu {
+        position: absolute;
+        right: 20px;
+    }
+    .dropdown-active {
+        display: block !important;
+    }
 }
 
 </style>
