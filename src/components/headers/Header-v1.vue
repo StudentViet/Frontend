@@ -9,7 +9,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav mx-auto navbar-center">
-                            <li><router-link to="/quan-ly/" class="font-bold">BÀI TẬP</router-link></li>
+                            <li v-if="user.role_id == 2"><router-link to="/quan-ly/" class="font-bold">BÀI TẬP</router-link></li>
+                            <li v-else><router-link to="/quan-ly/giao-vien" class="font-bold">LỚP HỌC</router-link></li>
                             <li><router-link to="/quan-ly/thoi-khoa-bieu/" class="font-bold font-inactive">THỜI KHÓA BIỂU</router-link></li>
                         </ul>
                         <ul class="navbar-nav">
@@ -38,7 +39,18 @@
 <script>
     export default {
         name: 'Header-v1',
-        mounted() {
+        data() {
+            return {
+                user: null
+            }
+        },
+        watch: {
+            '$route' () {
+                this.doFunctions();
+            }
+        },
+        async mounted() {
+            await this.checkLogged();
             this.doFunctions();
         },
         methods: {
@@ -66,6 +78,16 @@
                 this.$router.push({
                     name: "login"
                 });
+            },
+            async checkLogged() {
+                this.user = await this.$store.dispatch('getUser');
+
+                if (!this.user) {
+                    this.$router.push({
+                        name: "login"
+                    });
+                    return;
+                }
             }
         }
     }
@@ -75,7 +97,6 @@
 
 nav {
     padding: 20px;
-    z-index: 100;
 }
 
 .bg-light {
