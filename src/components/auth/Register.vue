@@ -89,7 +89,7 @@
                         <button type="submit" class="btn-primary">
                             <span class="font-bold">Đăng ký</span>
                         </button>
-                        <p class="text-center colorGray" style="font-size: 14px">Hoặc</p>
+                        <p class="text-center colorGray" style="font-size: 14px"> Hoặc </p>
                         <button type="button" class="btn-primary">
                             <i class="fa fa-facebook-square" style="font-size: 20px; margin-right: 5px"></i>
                             <span class="font-bold">Đăng ký / Đăng nhập bằng facebook</span>
@@ -102,6 +102,7 @@
         </div>
     </div>
 </template>
+
 <script>
     import AuthController from "../../controllers/auth.controller.js";
     export default {
@@ -122,6 +123,8 @@
         },
         watch: {
             $route() {
+                this.checkLogged();
+
                 Date.prototype.toDateInputValue = function() {
                     let local = new Date(this);
                     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -131,6 +134,8 @@
             },
         },
         mounted() {
+            this.checkLogged();
+
             Date.prototype.toDateInputValue = function() {
                 let local = new Date(this);
                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -143,6 +148,10 @@
                 const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return regex.test(String(email).toLowerCase());
             },
+            ValidatePhone(phone) {
+                const regex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+                return regex.test(phone);
+            },
             async Register() {
                 if (this.fullname == "" || this.schoolName == "" || this.schoolClass == "" || this.birthday == "" || this.phone == "" || this.role == "" || this.password == "" || this.confirmPassword == "") {
                     this.$snotify.error("Vui lòng nhập đầy đủ thông tin");
@@ -152,24 +161,45 @@
                     this.$snotify.error("Định dạng email của bạn không hợp lệ");
                     return;
                 }
+                if (!this.ValidatePhone(this.phone)) {
+                    this.$snotify.error("Định dạng số điện thoại của bạn không hợp lệ");
+                    return;
+                }
                 if (this.password !== this.confirmPassword) {
                     this.$snotify.error("Mật khẩu bạn nhập không khớp");
                     return;
                 }
-
                 const response = await AuthController.register(this.fullname, this.email, this.phone, this.password, this.confirmPassword, this.schoolName, this.schoolClass, this.birthday, this.role);
-
                 if (!response.data.isError) {
                     this.$snotify.success("Đăng ký thành công");
-                    this.$router.push({ name: 'login'});
+                    this.$router.push({
+                        name: "login"
+                    });
+                    return;
+                } else {
+                    this.$snotify.error(response.data.message);
                     return;
                 }
-
-                this.errors = response.data.messages;
             },
+            async checkLogged() {
+                try {
+                    if (localStorage.getItem('accessToken') == '') return;
+                    var response = await AuthController.getUser();
+                } catch (err) {
+                    localStorage.setItem('accessToken', '');
+                }
+
+                if (response) {
+                    this.$router.push({
+                        name: (response.data.data.user.role_id == 1) ? "exam" : "/"
+                    });
+                    this.$store.commit('setUser', response.data.data.user);
+                }
+            }
         },
     };
 </script>
+
 <style>
     @media screen and (max-width: 320px) {
         #register .row {

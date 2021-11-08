@@ -26,9 +26,9 @@ export const router = new VueRouter({
             component: Manage,
             name: 'manage',
             children: [
-                { path: '/quan-ly/bai-tap', component: Exam },
-                { path: '/quan-ly/', component: Exam },
-                { path: '/quan-ly/thoi-khoa-bieu', component: Schedule },
+                { path: '/quan-ly/bai-tap', component: Exam, name: 'exam' },
+                { path: '/quan-ly/', component: Exam, name: 'exam' },
+                { path: '/quan-ly/thoi-khoa-bieu', component: Schedule, name: 'schedule' },
             ]
         },
 

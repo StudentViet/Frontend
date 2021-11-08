@@ -4,6 +4,7 @@ import App from './App.vue'
 import Snotify, { SnotifyPosition } from 'vue-snotify'
 
 import { router } from './routes'
+import store from './store'
 
 import 'vue-snotify/styles/material.css'
 
@@ -22,5 +23,6 @@ Vue.use(Snotify, options)
 
 new Vue({
     router,
+    store,
     render: h => h(App),
 }).$mount('#app');

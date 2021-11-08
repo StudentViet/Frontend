@@ -19,13 +19,13 @@
                         <small class="col d-sm-none text-center text-muted"></small>
                         <span class="col-1"></span>
                     </h5>
-                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 1</a>
-                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 2</a>
-                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 3</a>
-                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 4</a>
-                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 5</a>
+                    <a class="event d-grid p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 1</a>
+                    <a class="event d-grid p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 2</a>
+                    <a class="event d-grid p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 3</a>
+                    <a class="event d-grid p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 4</a>
+                    <a class="event d-grid p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white">Tiết 5</a>
                 </div>
-                <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate">
+                <div class="day col-sm p-2 border-left-0 border-top-0 text-truncate">
                     <h5 class="row align-items-center">
                         <small class="col d-sm-none text-center text-muted">Thứ 2</small>
                         <span class="col-1"></span>
@@ -60,7 +60,7 @@
                         9:30 am
                     </a>
                 </div>
-                <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate">
+                <div class="day col-sm p-2 border-left-0 border-top-0 text-truncate">
                     <h5 class="row align-items-center">
                         <small class="col d-sm-none text-center text-muted">Thứ 4</small>
                         <span class="col-1"></span>
@@ -83,7 +83,7 @@
                     </h5>
                     <!-- <p class="d-sm-none">Không có tiết nào</p> -->
                 </div>
-                <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
+                <div class="day col-sm p-2 border-left-0 border-top-0 text-truncate ">
                     <h5 class="row align-items-center">
                         <small class="col d-sm-none text-center text-muted">Thứ 6</small>
                         <span class="col-1"></span>
@@ -120,6 +120,7 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         name: 'Schedule'
@@ -152,22 +153,24 @@
         background: white !important;
         font-size: 25px;
         color: black !important;
+        margin-bottom: 15px !important;
         text-align: center;
-        margin-top: 20px;
+        justify-items: center;
+        align-items: center;
     }
 
     .day a {
         height: 100px;
         background: rgb(30, 136, 229) !important;
         font-size: 18px;
-        margin-top: 15px !important;
+        margin-bottom: 15px !important;
         cursor: pointer;
     }
 
     .event-none {
         height: 100px;
         background: white !important;
-        margin-top: 15px;
+        margin-bottom: 15px;
     }
 }
 </style>

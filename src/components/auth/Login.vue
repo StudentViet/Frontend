@@ -11,7 +11,7 @@
                     </a>
                     <form @submit.prevent="Login()">
                         <div class="group">
-                            <input v-model="email" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập email hoặc số điện thoại')" oninput="this.setCustomValidity('')" />
+                            <input v-model="user" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập email hoặc số điện thoại')" oninput="this.setCustomValidity('')" />
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Email hoặc số điện thoại</label>
@@ -51,41 +51,55 @@
         name: "Login",
         data() {
             return {
-                email: "",
+                user: "",
                 password: "",
             };
         },
+        mounted() {
+            this.checkLogged();
+        },
+        watch: {
+            '$route' () {
+                this.checkLogged();
+            }
+        },
         methods: {
-            ValidateEmail(email) {
-                const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return regex.test(String(email).toLowerCase());
-            },
             async Login() {
-                if (this.email == "" || this.password == "") {
+                if (this.user == "" || this.password == "") {
                     this.$snotify.error("Vui lòng nhập đầy đủ thông tin");
                     return;
                 }
-
-                if (!this.ValidateEmail(this.email)) {
-                    this.$snotify.error("Email không hợp lệ");
-                    return;
-                }
-
-                const response = await AuthController.login(this.email, this.password);
+                const response = await AuthController.login(this.user, this.password);
 
                 if (!response.data.isError) {
-                    this.$snotify.success("Đăng nhập thành công");
                     localStorage.setItem("accessToken", response.data.data.access_token.accessToken);
-                    this.$router.push({ name: 'manage'});
+                    this.$snotify.success("Đăng nhập thành công");
+                    this.$router.push({
+                        name: "exam"
+                    });
                     return;
                 }
 
                 this.$snotify.error(response.data.message);
             },
+            async checkLogged() {
+                try {
+                    if (localStorage.getItem('accessToken') == '') return;
+                    var response = await AuthController.getUser();
+                } catch (err) {
+                    localStorage.setItem('accessToken', '');
+                }
+
+                if (response) {
+                    this.$router.push({
+                        name: (response.data.data.user.role_id == 1) ? "exam" : "/"
+                    });
+                    this.$store.commit('setUser', response.data.data.user);
+                }
+            }
         },
     };
 </script>
-
 <style>
     #login {
         overflow-x: hidden;
