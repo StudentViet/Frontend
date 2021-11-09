@@ -1,14 +1,37 @@
 <template>
     <div id="setting">
+        <Loader v-if="load"/>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="center-template">
-                        <div v-if="!classRoom">
+                        <div style="display: flex; flex-wrap; width: 120px; margin: 0 auto">
+                            <div class="icon-btn m-auto mt-4" title="Tạo lớp học" data-bs-toggle="modal" data-bs-target="#createClassModal">
+                                <i class="fa fa-plus"></i>
+                            </div>
+                            <div class="icon-btn m-auto mt-4" title="Tạo bài tập" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                                <i class="ri-file-add-fill"></i>
+                            </div>
+                        </div>
+                        <div v-if="!classRooms" class="mt-3">
                             <img class="text-center" src="../../assets/images/empty.png" height="250"/>
                             <h2 class="colorGray text-center mt-4">Bạn chưa có lớp học nào, hãy tạo một lớp học</h2>
                             <div class="icon-btn m-auto mt-4" title="Tạo lớp học" data-bs-toggle="modal" data-bs-target="#createClassModal">
                                 <i class="fa fa-plus"></i>
+                            </div>
+                        </div>
+
+                        <div v-else class="mt-3">
+                            <div
+                                class="classRoom"
+                                v-for="(classRoom, index) in classRooms"
+                                v-bind:item="classRoom.name"
+                                v-bind:index="index"
+                                v-bind:key="classRoom.id"
+                            >
+                                <h2> {{ classRoom.name }} </h2>
+                                <p> Lớp học chưa có bài tập nào </p>
+                                <hr/>
                             </div>
                         </div>
                     </div>
@@ -56,11 +79,64 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body mb-5" style="padding: 10px">
+                        <form @submit.prevent="AddExercise()">
+                            <treeselect class="mt-2" v-model="exercise.classes" :multiple="true" :options="options" placeholder="Chọn lớp học..." />
+
+                            <div class="group">
+                                <input
+                                    v-model="exercise.description"
+                                    type="text"
+                                    required
+                                    oninvalid="this.setCustomValidity('Vui lòng chọn một file word')"
+                                    oninput="this.setCustomValidity('')"
+                                />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Mô tả</label>
+                            </div>
+
+                            <div class="group">
+                                <input v-model="exercise.date" type="date" id="datePicker" oninvalid="this.setCustomValidity('Vui lòng chọn ngày nộp')" oninput="this.setCustomValidity('')" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Ngày nộp</label>
+                            </div>
+
+                            <div class="group">
+                                <input v-model="exercise.time" type="time" id="timePicker" oninvalid="this.setCustomValidity('Vui lòng chọn thời gian nộp')" oninput="this.setCustomValidity('')" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Thời gian nộp</label>
+                            </div>
+
+                            <div class="mt-3">
+                                <label for="formFile" class="form-label colorPrimary">Bài tập</label>
+                                <input class="form-control" required type="file" accept="application/msword" @change="onFileChange">
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
+    import Treeselect from '@riophae/vue-treeselect';
+    import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+
     import ManageController from "../../controllers/manage.controller.js";
+    import Loader from '../loading/loading-v1.vue';
 
     export default {
         name: 'Setting',
@@ -68,13 +144,33 @@
             return {
                 name: "",
                 data: "",
-                classRoom: null,
-                classLink: null
+                load: true,
+                classRooms: null,
+                classLink: null,
+                exercise: {
+                    classes: [],
+                    description: "",
+                    date: null,
+                    file: null,
+                },
+                options: []
             }
+        },
+        components: {
+            Loader,
+            Treeselect
         },
         watch: {
             '$route' () {
                 this.checkLogged();
+                this.getClass();
+
+                Date.prototype.toDateInputValue = function() {
+                    let local = new Date(this);
+                    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                    return local.toJSON().slice(0, 10);
+                };
+                document.getElementById("datePicker").value = new Date().toDateInputValue();
             }
         },
         methods: {
@@ -100,6 +196,17 @@
                 }
 
                 this.$snotify.error(response.data.message);
+                await this.getClass();
+            },
+            async onFileChange(e) {
+                this.exercise.file = e.target.files[0];
+            },
+            async getClass() {
+                const response = await ManageController.getClass();
+                this.classRooms = response.data.data.length ? response.data.data.slice(1) : null;
+
+                this.load = false;
+                this.classRooms.map(x => this.options.push({ id: x.idClass, label: x.name}));
             },
             async checkLogged() {
                 const response = await this.$store.dispatch('getUser');
@@ -121,10 +228,14 @@
         },
         mounted() {
             this.checkLogged();
+            this.getClass();
+
+            Date.prototype.toDateInputValue = function() {
+                let local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0, 10);
+            };
+            document.getElementById("datePicker").value = new Date().toDateInputValue();
         }
     }
 </script>
-
-<style>
-
-</style>

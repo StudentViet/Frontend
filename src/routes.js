@@ -8,6 +8,8 @@ import Register from './components/auth/Register.vue'
 
 import ForgotPassword from './components/auth/ForgotPassword.vue'
 
+import ResetPassword from './components/auth/ResetPassword.vue'
+
 import Manage from './components/manage/Manage.vue'
 
 import Exercise from './components/manage/Exercise.vue'
@@ -41,6 +43,7 @@ export const router = new VueRouter({
         { path: '/dang-nhap', component: Login, name: 'login'},
         { path: '/dang-ky', component: Register, name: 'register'},
         { path: '/quen-mat-khau', component: ForgotPassword, name: 'forgotpassword'},
+        { path: '/lay-lai-mat-khau/:token', component: ResetPassword, name: 'resetpassword'},
         { path: '*', component: PageNotFound, name: 'notfound' }
     ]
 })

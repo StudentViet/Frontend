@@ -132,7 +132,7 @@
             },
             async getClass() {
                 const response = await ManageController.getClass();
-                this.classRooms = response.data.data.length ? response.data.data : null;
+                this.classRooms = response.data.data.length ? response.data.data.slice(1) : null;
 
                 this.load = false;
             }
