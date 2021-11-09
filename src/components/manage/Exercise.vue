@@ -15,37 +15,16 @@
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="joinClassModal" tabindex="-1" aria-labelledby="joinClassModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body mb-5" style="padding: 10px">
-                            <form>
-                                <div class="group">
-                                    <input
-                                        type="text"
-                                        required
-                                        oninvalid = "this.setCustomValidity('Vui lòng nhập ID lớp học')"
-                                        oninput="this.setCustomValidity('')"
-                                    />
-                                    <span class="highlight"></span>
-                                    <span class="bar"></span>
-                                    <label>ID lớp học</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
         <div v-else>
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="center-template">
+                            <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#joinClassModal">
+                                <i class="fa fa-plus"></i>
+                            </div>
                             <div
                                 class="classRoom"
                                 v-for="(classRoom, index) in classRooms"
@@ -54,17 +33,47 @@
                                 v-bind:key="classRoom.id"
                             >
                                 <h2> {{ classRoom.name }} </h2>
+                                <p> Lớp học chưa có bài tập nào </p>
+                                <hr/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="joinClassModal" tabindex="-1" aria-labelledby="joinClassModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body mb-5" style="padding: 10px">
+                        <form @submit.prevent="AddClass()">
+                            <div class="group">
+                                <input
+                                    v-model="idClass"
+                                    type="text"
+                                    required
+                                    oninvalid = "this.setCustomValidity('Vui lòng nhập ID lớp học')"
+                                    oninput="this.setCustomValidity('')"
+                                />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>ID lớp học</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
     import ManageController from "../../controllers/manage.controller.js";
+    import ClassController from "../../controllers/class.controller.js";
 
     import Loader from '../loading/loading-v1.vue';
 
@@ -72,6 +81,7 @@
         name: 'Exercise',
         data() {
             return {
+                idClass: null,
                 classRooms: null,
                 load: true
             }
@@ -103,9 +113,26 @@
                     return;
                 }
             },
+            async AddClass() {
+                try {
+                    var response = await ClassController.joinClass(this.idClass);
+                } catch (err) {
+                    this.$snotify.error("Không thể tham gia lớp học");
+                }
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+                this.$snotify.success(response.data.message);
+
+                this.$router.push({
+                    name: "exam"
+                });
+            },
             async getClass() {
                 const response = await ManageController.getClass();
-                this.classRooms = response.data.data || null;
+                this.classRooms = response.data.data.length ? response.data.data : null;
 
                 this.load = false;
             }
