@@ -3,6 +3,13 @@ import axios from 'axios';
 const api = 'https://api.studentviet.edu.vn/api';
 
 class ManageController {
+    static getClass() {
+        return axios.get(`${api}/classRoom/list`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
     static createClass(name, data) {
         return axios.post(`${api}/classRoom/create`, `name=${name}&data=[${'"' + data.join('", "') + '"'}]`, {
             headers: {
