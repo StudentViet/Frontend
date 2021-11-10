@@ -72,7 +72,7 @@
                 const response = await this.$store.dispatch('getUser');
                 if (response) {
                     this.$router.push({
-                        name: (response.role_id == 2) ? "exam" : "/"
+                        name: (response.role_id == 2) ? "exam" : "setting"
                     });
                 }
             }

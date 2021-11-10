@@ -9,6 +9,13 @@ class ClassController {
             }
         });
     }
+    static getClass(id) {
+        return axios.get(`${api}/classRoom/show/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
 }
 
 export default ClassController;

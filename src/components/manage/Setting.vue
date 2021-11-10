@@ -5,14 +5,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="center-template">
-                        <div style="display: flex; flex-wrap; width: 120px; margin: 0 auto">
-                            <div class="icon-btn m-auto mt-4" title="Tạo lớp học" data-bs-toggle="modal" data-bs-target="#createClassModal">
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <div class="icon-btn m-auto mt-4" title="Tạo bài tập" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
-                                <i class="ri-file-add-fill"></i>
-                            </div>
-                        </div>
                         <div v-if="!classRooms" class="mt-3">
                             <img class="text-center" src="../../assets/images/empty.png" height="250"/>
                             <h2 class="colorGray text-center mt-4">Bạn chưa có lớp học nào, hãy tạo một lớp học</h2>
@@ -22,16 +14,26 @@
                         </div>
 
                         <div v-else class="mt-3">
+                            <div style="display: flex; flex-wrap; width: 120px; margin: 0 auto">
+                                <div class="icon-btn m-auto mt-4" title="Tạo lớp học" data-bs-toggle="modal" data-bs-target="#createClassModal">
+                                    <i class="fa fa-plus"></i>
+                                </div>
+                                <div class="icon-btn m-auto mt-4" title="Tạo bài tập" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                                    <i class="ri-file-add-fill"></i>
+                                </div>
+                            </div>
                             <div
                                 class="classRoom"
                                 v-for="(classRoom, index) in classRooms"
                                 v-bind:item="classRoom.name"
                                 v-bind:index="index"
-                                v-bind:key="classRoom.id"
+                                v-bind:key="classRoom.idClass"
                             >
-                                <h2> {{ classRoom.name }} </h2>
-                                <p> Lớp học chưa có bài tập nào </p>
-                                <hr/>
+                                <router-link :to="`/quan-ly/giao-vien/lop-hoc/${classRoom.idClass}`" style="color: black !important">
+                                    <h2> {{ classRoom.name }} </h2>
+                                    <p> Lớp học chưa có bài tập nào </p>
+                                    <hr/>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -42,13 +44,16 @@
         <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content" style="height: 450px">
+                    <div class="modal-header">
+                        <h5 class="modal-title">TẠO LỚP HỌC</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <div class="modal-body mb-5" style="padding: 10px">
                         <form @submit.prevent="CreateClass()">
                             <div class="group">
                                 <input
                                     v-model="name"
                                     type="text"
-                                    required
                                     oninvalid = "this.setCustomValidity('Vui lòng nhập tên lớp học')"
                                     oninput="this.setCustomValidity('');"
                                 />
@@ -83,15 +88,16 @@
         <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">TẠO BÀI TẬP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <div class="modal-body mb-5" style="padding: 10px">
                         <form @submit.prevent="AddExercise()">
-                            <treeselect class="mt-2" v-model="exercise.classes" :multiple="true" :options="options" placeholder="Chọn lớp học..." />
-
                             <div class="group">
                                 <input
                                     v-model="exercise.description"
                                     type="text"
-                                    required
                                     oninvalid="this.setCustomValidity('Vui lòng chọn một file word')"
                                     oninput="this.setCustomValidity('')"
                                 />
@@ -101,22 +107,26 @@
                             </div>
 
                             <div class="group">
-                                <input v-model="exercise.date" type="date" id="datePicker" oninvalid="this.setCustomValidity('Vui lòng chọn ngày nộp')" oninput="this.setCustomValidity('')" />
+                                <input v-model="exercise.date" type="date" id="datePicker" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Ngày nộp</label>
                             </div>
 
                             <div class="group">
-                                <input v-model="exercise.time" type="time" id="timePicker" oninvalid="this.setCustomValidity('Vui lòng chọn thời gian nộp')" oninput="this.setCustomValidity('')" />
+                                <input v-model="exercise.time" type="time" id="timePicker" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Thời gian nộp</label>
                             </div>
 
                             <div class="mt-3">
+                                <treeselect class="mt-2" v-model="exercise.classes" :multiple="true" :options="options" placeholder="Chọn lớp học..." />
+                            </div>
+
+                            <div class="mt-3">
                                 <label for="formFile" class="form-label colorPrimary">Bài tập</label>
-                                <input class="form-control" required type="file" accept="application/msword" @change="onFileChange">
+                                <input class="form-control" type="file" accept="application/msword" @change="onFileChange">
                             </div>
 
                         </form>
@@ -161,8 +171,8 @@
             Treeselect
         },
         watch: {
-            '$route' () {
-                this.checkLogged();
+            '$route': async function () {
+                await this.checkLogged();
                 this.getClass();
             }
         },
@@ -185,20 +195,20 @@
                 if (!response.data.isError) {
                     this.classLink = `http://localhost:8080/tham-gia-lop-hoc/${response.data.idClass}`
                     this.$snotify.success(response.data.message);
+                    this.getClass();
                     return;
                 }
 
                 this.$snotify.error(response.data.message);
-                await this.getClass();
             },
             async onFileChange(e) {
                 this.exercise.file = e.target.files[0];
             },
             async getClass() {
                 const response = await ManageController.getClass();
-                this.classRooms = response.data.data.length ? response.data.data.slice(1) : null;
-
+                this.classRooms = response.data.data.length ? response.data.data : null;
                 this.load = false;
+                this.options = [];
                 this.classRooms.map(x => this.options.push({ id: x.idClass, label: x.name}));
             },
             async checkLogged() {
@@ -219,8 +229,8 @@
                 }
             }
         },
-        mounted() {
-            this.checkLogged();
+        async mounted() {
+            await this.checkLogged();
             this.getClass();
         }
     }

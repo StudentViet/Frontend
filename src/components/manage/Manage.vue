@@ -15,8 +15,8 @@
             Header
         },
         watch: {
-            '$route' () {
-                this.checkLogged();
+            '$route': async function () {
+                await this.checkLogged();
             }
         },
         methods: {
@@ -30,8 +30,8 @@
                 }
             }
         },
-        mounted() {
-            this.checkLogged();
+        async mounted() {
+            await this.checkLogged();
         }
     }
 </script>

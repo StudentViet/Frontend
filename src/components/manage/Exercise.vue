@@ -90,8 +90,8 @@
             Loader
         },
         watch: {
-            '$route' () {
-                this.checkLogged();
+            '$route': async function () {
+                await this.checkLogged();
                 this.getClass();
             }
         },
@@ -137,8 +137,8 @@
                 this.load = false;
             }
         },
-        mounted() {
-            this.checkLogged();
+        async mounted() {
+            await this.checkLogged();
             this.getClass();
         }
     }

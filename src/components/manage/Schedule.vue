@@ -26,11 +26,13 @@
 
 <template>
     <div id="schedule">
+        <Loader v-if="isTeacher == null" />
         <div class="mt-5 container-fluid">
             <header>
                 <h1 class="text-center">TUẦN NÀY</h1>
                 <div class="row d-none d-sm-flex p-1 text-black">
-                    <button class="col-sm p-1 text-center btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">Thêm</button>
+                    <button class="col-sm p-1 text-center btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal" v-if="isTeacher">Thêm</button>
+                    <h5 class="col-sm p-1 text-center" v-else></h5>
                     <h5 class="col-sm p-1 text-center">Thứ 2</h5>
                     <h5 class="col-sm p-1 text-center">Thứ 3</h5>
                     <h5 class="col-sm p-1 text-center">Thứ 4</h5>
@@ -93,9 +95,13 @@
         <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">THÊM THỜI KHÓA BIỂU</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <div class="modal-body mb-5" style="padding: 10px">
                         <form @submit.prevent="AddSchedule()">
-                            
+
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -223,8 +229,40 @@
 </template>
 
 <script>
+    import Loader from '../loading/loading-v1.vue';
+
     export default {
-        name: 'Schedule'
+        name: 'Schedule',
+        data() {
+            return {
+                isTeacher: null
+            }
+        },
+        components: {
+            Loader
+        },
+        watch: {
+            '$route': async function () {
+                await this.checkLogged();
+            }
+        },
+        methods: {
+            async checkLogged() {
+                const response = await this.$store.dispatch('getUser');
+
+                if (!response) {
+                    this.$router.push({
+                        name: "login"
+                    });
+                    return;
+                }
+
+                this.isTeacher = (response.role_id == 1);
+            }
+        },
+        async mounted() {
+            await this.checkLogged();
+        }
     }
 </script>
 
