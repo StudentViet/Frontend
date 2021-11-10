@@ -11,7 +11,8 @@ class ManageController {
         });
     }
     static createClass(name, data) {
-        return axios.post(`${api}/classRoom/create`, `nameClass=${name}&data=[${'"' + data.join('", "') + '"'}]`, {
+        const formData = (data[0] != "" && data.length) ? (`nameClass=${name}&data=[${'"' + data.join('", "') + '"'}]`) : (`nameClass=${name}&data=[]`);
+        return axios.post(`${api}/classRoom/create`, formData, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }

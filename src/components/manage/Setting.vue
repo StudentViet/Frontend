@@ -43,7 +43,7 @@
 
         <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content" style="height: 450px">
+                <div class="modal-content" style="height: 550px">
                     <div class="modal-header">
                         <h5 class="modal-title">TẠO LỚP HỌC</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -209,7 +209,7 @@
                 this.classRooms = response.data.data.length ? response.data.data : null;
                 this.load = false;
                 this.options = [];
-                this.classRooms.map(x => this.options.push({ id: x.idClass, label: x.name}));
+                this.classRooms?.map(x => this.options.push({ id: x.idClass, label: x.name}));
             },
             async checkLogged() {
                 const response = await this.$store.dispatch('getUser');
