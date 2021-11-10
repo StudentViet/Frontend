@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             <div
-                                class="classRoom"
+                                class="classRoom mb-5"
                                 v-for="(classRoom, index) in classRooms"
                                 v-bind:item="classRoom.name"
                                 v-bind:index="index"
