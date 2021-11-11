@@ -31,7 +31,7 @@
                             >
                                 <router-link :to="`/quan-ly/giao-vien/lop-hoc/${classRoom.idClass}`" style="color: black !important">
                                     <h2> {{ classRoom.name }} </h2>
-                                    <p> Lớp học chưa có bài tập nào </p>
+                                    <p> {{(classRoom.exercises > 0) ? `Lớp học có ${classRoom.exercises} bài tập` : "Lớp học chưa có bài tập nào"}} </p>
                                     <hr/>
                                 </router-link>
                             </div>
@@ -128,6 +128,8 @@
                                 <label for="formFile" class="form-label colorPrimary">Bài tập</label>
                                 <input class="form-control" type="file" accept="application/msword" @change="onFileChange">
                             </div>
+
+                            <button type="submit" class="btn-primary mt-3">Tạo</button>
 
                         </form>
                     </div>

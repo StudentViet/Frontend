@@ -16,6 +16,20 @@ class ClassController {
             }
         });
     }
+    static addStudent(email, idClass) {
+        return axios.post(`${api}/classRoom/add`, `idClass=${idClass}&email=${email}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
+    static removeStudent(email, idClass) {
+        return axios.post(`${api}/classRoom/kick`, `idClass=${idClass}&email=${email}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
 }
 
 export default ClassController;

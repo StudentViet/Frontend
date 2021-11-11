@@ -52,6 +52,7 @@
         async mounted() {
             await this.checkLogged();
             this.doFunctions();
+            setTimeout(() => document.querySelector("nav").style.zIndex = "1000", 2000);
         },
         methods: {
             doFunctions() {

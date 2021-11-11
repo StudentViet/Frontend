@@ -14,11 +14,14 @@ import Manage from './components/manage/Manage.vue'
 
 import Exercise from './components/manage/Exercise.vue'
 
+import DoExercise from './components/manage/DoExercise.vue'
+
 import Setting from './components/manage/Setting.vue'
 
 import Class from './components/manage/Class.vue'
 
 import Schedule from './components/manage/Schedule.vue'
+
 
 import JoinClass from './components/JoinClass.vue'
 
@@ -39,6 +42,7 @@ export const router = new VueRouter({
                 { path: '/quan-ly/giao-vien', component: Setting, name: 'setting' },
                 { path: '/quan-ly/giao-vien/lop-hoc/:id', component: Class, name: 'class' },
                 { path: '/quan-ly/thoi-khoa-bieu', component: Schedule, name: 'schedule' },
+                { path: '/quan-ly/lam-bai-tap/:id', component: DoExercise, name: 'DoExercise' },
             ]
         },
 

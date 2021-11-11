@@ -1,40 +1,33 @@
 <template>
     <div id="exercise">
-        <Loader v-if="load"/>
-        <div v-if="!classRooms">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="center-template">
+        <Loader v-if="!classRooms"/>
+        <div class="container" v-else>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="center-template">
+                        <div v-if="!classRooms">
                             <img class="text-center" src="../../assets/images/empty.png" height="250"/>
                             <h2 class="colorGray text-center mt-4">Bạn chưa tham gia lớp học nào</h2>
                             <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#joinClassModal">
                                 <i class="fa fa-plus"></i>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div v-else>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="center-template">
+                        <div v-else>
                             <div class="icon-btn m-auto mt-4" title="Tham gia lớp học" data-bs-toggle="modal" data-bs-target="#joinClassModal">
                                 <i class="fa fa-plus"></i>
                             </div>
                             <div
-                                class="classRoom"
+                                class="classRoom mb-5"
                                 v-for="(classRoom, index) in classRooms"
                                 v-bind:item="classRoom.name"
                                 v-bind:index="index"
-                                v-bind:key="classRoom.id"
+                                v-bind:key="classRoom.idClass"
                             >
-                                <h2> {{ classRoom.name }} </h2>
-                                <p> Lớp học chưa có bài tập nào </p>
-                                <hr/>
+                                <router-link :to="`/quan-ly/lam-bai-tap/${classRoom.idClass}`" style="color: black !important">
+                                    <h2> {{ classRoom.name }} </h2>
+                                    <p> {{(classRoom.exercises > 0) ? `Lớp học có ${classRoom.exercises} bài tập` : "Lớp học chưa có bài tập nào"}} </p>
+                                    <hr/>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -83,7 +76,6 @@
             return {
                 idClass: null,
                 classRooms: null,
-                load: true
             }
         },
         components: {
@@ -125,16 +117,12 @@
                     return;
                 }
                 this.$snotify.success(response.data.message);
-
-                this.$router.push({
-                    name: "exam"
-                });
+                this.getClass();
             },
             async getClass() {
                 const response = await ManageController.getClass();
-                this.classRooms = response.data.data.length ? response.data.data.slice(1) : null;
-
-                this.load = false;
+                console.log(response);
+                this.classRooms = response.data.data.length ? response.data.data : null;
             }
         },
         async mounted() {

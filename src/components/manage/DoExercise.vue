@@ -4,71 +4,11 @@
         <div class="content" v-else>
             <div class="container">
                 <div style="display: flex; flex-wrap; width: 100%;">
-                    <h2 class="text-center"> Danh sách học sinh: {{ classRoom.name }} </h2>
-                    <p style="display: flex;flex-flow: column; justify-content: center;">&nbsp;&nbsp;{{ classRoom.data.filter(x => x.email != this.$store.state.user.email).length }} học sinh</p>
-                </div>
-                <div style="display: flex; flex-wrap; width: 120px;" class="mb-5">
-                    <div class="icon-btn m-auto mt-4" title="Thêm học sinh vào lớp học" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                        <i class="fa fa-plus"></i>
-                    </div>
-                    <div class="icon-btn m-auto mt-4" title="Link tham gia lớp học" @click="copyLink()">
-                        <i class="ri-links-line"></i>
-                    </div>
+                    <h2 class="text-center"> Bài tập: {{ classRoom.name }} </h2>
+                    <p style="display: flex;flex-flow: column; justify-content: center;">&nbsp;&nbsp;{{ classRoom.exercises.length }} Bài tập</p>
                 </div>
 
                 <hr/>
-
-                <div class="table-responsive">
-                    <table class="table table-striped custom-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" class="js-check-all" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </th>
-                                <th scope="col">#</th>
-                                <th scope="col">Tên</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                scope="row"
-                                v-for="(user, index) in classRoom.data.filter(x => x.email != this.$store.state.user.email)"
-                                v-bind:item="user.name"
-                                v-bind:key="user.name"
-                                v-bind:id="`user-${user.email}`"
-                            >
-                                <td>
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td>
-                                    {{ index + 1 }}
-                                </td>
-                                <td class="pl-0">
-                                    <div class="d-flex align-items-center">
-                                        <a href="#" class="name">{{ user.name }}</a>
-                                    </div>
-                                </td>
-                                <td>
-                                    {{ user.email }}
-                                </td>
-                                <td><a href="#" @click="removeStudent(user.email)">Xóa</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <h3 v-if="!classRoom.data.filter(x => x.email != this.$store.state.user.email).length" class="colorGray text-center">Chưa có học sinh trong lớp học</h3>
-                </div>
-
-                <hr/>
-
-                <h2 class="mb-5"> Bài tập: {{ classRoom.exercises.length }} </h2>
 
                 <div class="table-responsive">
                     <table class="table table-striped custom-table">
@@ -84,8 +24,7 @@
                                 <th scope="col">Mô tả</th>
                                 <th scope="col">Thời gian nộp bài</th>
                                 <th scope="col">Tải bài tập</th>
-                                <th scope="col">Xóa bài tập</th>
-                                <th scope="col">Chỉnh sửa bài tập</th>
+                                <th scope="col">Nộp bài tập</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,44 +53,11 @@
                                     {{ exercise.expires_at | moment("YYYY-MM-DD HH:mm") }}
                                 </td>
                                 <td><a href="#" class="colorPrimary" @click="downloadExercise(exercise.fileUrl)">Tải bài tập</a></td>
-                                <td><a href="#" class="colorPrimary" @click="removeExercise(exercise.idExam)">Xóa</a></td>
-                                <td><a href="#" class="colorPrimary" @click="editExercise(exercise.idExam)">sửa</a></td>
+                                <td><a href="#" class="colorPrimary" @click="submitExercise()">Nộp bài</a></td>
                             </tr>
                         </tbody>
                     </table>
                     <h3 v-if="!classRoom.exercises.length" class="colorGray text-center">Lớp học chưa có bài tập nào</h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">THÊM HỌC SINH</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body mb-5" style="padding: 10px">
-                        <form @submit.prevent="AddStudent()">
-                            <div class="group">
-                                <input
-                                    v-model="user.email"
-                                    type="text"
-                                    oninvalid = "this.setCustomValidity('Vui lòng nhập email học sinh')"
-                                    oninput="this.setCustomValidity('');"
-                                />
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Email</label>
-                            </div>
-
-                            <button type="submit" class="btn-primary mt-3">Thêm</button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -169,9 +75,6 @@
             return {
                 idClass: this.$route.params.id,
                 classRoom: null,
-                user: {
-                    email: ''
-                }
             }
         },
         components: {
@@ -181,7 +84,6 @@
             '$route': async function() {
                 await this.checkLogged();
                 this.getClass();
-                this.doFunctions();
             }
         },
         methods: {
@@ -191,62 +93,12 @@
                 if (response.data.isError) {
                     this.$snotify.error(response.data.message);
                     this.$router.push({
-                        name: "setting"
+                        name: "exam"
                     });
                     return;
                 }
 
                 this.classRoom = response.data.data[0];
-            },
-            async AddStudent() {
-                const response = await ClassController.addStudent(this.user.email, this.idClass);
-
-                if (response.data.isError) {
-                    this.$snotify.error(response.data.message);
-                    return;
-                }
-
-                this.$snotify.success(response.data.message);
-                this.getClass();
-            },
-            async removeStudent(email) {
-                const response = await ClassController.removeStudent(email, this.idClass);
-
-                if (response.data.isError) {
-                    this.$snotify.error(response.data.message);
-                    return;
-                }
-
-                document.getElementById(`user-${email}`).remove();
-
-                this.$snotify.success(response.data.message);
-                this.getClass();
-            },
-            async copyLink() {
-                let inputc = document.body.appendChild(document.createElement("input"));
-                inputc.value = `http://localhost:8080/tham-gia-lop-hoc/${this.classRoom.idClass}`;
-                inputc.focus();
-                inputc.select();
-                document.execCommand('copy');
-                inputc.parentNode.removeChild(inputc);
-
-                this.$snotify.success("Đã copy link tham gia lớp học");
-            },
-            async doFunctions() {
-                document.querySelector('.js-check-all').addEventListener('click', function() {
-
-                if ( document.querySelector(this).prop('checked') ) {
-                  document.querySelector('.control--checkbox input[type="checkbox"]').each(function() {
-                    document.querySelector(this).prop('checked', true);
-                  })
-                } else {
-                  document.querySelector('.control--checkbox input[type="checkbox"]').each(function() {
-                    document.querySelector(this).prop('checked', false);
-                  })
-                }
-
-              });
-
             },
             async checkLogged() {
                 const response = await this.$store.dispatch('getUser');
@@ -258,9 +110,9 @@
                     return;
                 }
 
-                if (response.role_id == 2) {
+                if (response.role_id == 1) {
                     this.$router.push({
-                        name: "exam"
+                        name: "setting"
                     });
                     return;
                 }
@@ -269,7 +121,6 @@
         async mounted() {
             await this.checkLogged();
             this.getClass();
-            this.doFunctions();
         }
     }
 </script>
