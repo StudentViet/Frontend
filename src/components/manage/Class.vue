@@ -1,6 +1,6 @@
 <template>
     <div id="class">
-        <Loader v-if="!classRoom" />
+        <Loader v-if="classRoom == null" />
         <div class="content" v-else>
             <div class="container">
                 <div style="display: flex; flex-wrap; width: 100%;">
@@ -113,9 +113,9 @@
                                 <td>
                                     {{ exercise.expires_at | moment("YYYY-MM-DD HH:mm") }}
                                 </td>
-                                <td><a href="#" class="colorPrimary" @click="downloadExercise(exercise.fileUrl)">Tải bài tập</a></td>
-                                <td><a href="#" class="colorPrimary" @click="removeExercise(exercise.idExam)">Xóa</a></td>
-                                <td><a href="#" class="colorPrimary" @click="editExercise(exercise.idExam)">sửa</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="DownloadExercise(exercise.fileUrl)">Tải bài tập</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="RemoveExercise(exercise.idExam)">Xóa</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="EditExercise(exercise.idExam)">sửa</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -161,6 +161,7 @@
 
 <script>
     import ClassController from "../../controllers/class.controller.js";
+    import ExerciseController from "../../controllers/exercise.controller.js";
     import Loader from '../loading/loading-v1.vue';
 
     export default {
@@ -197,6 +198,34 @@
                 }
 
                 this.classRoom = response.data.data[0];
+            },
+            async DownloadExercise(file_name) {
+                const response = await ExerciseController.downloadExercise(file_name);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success("Tải bài tập thành công");
+
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', file_name);
+                document.body.appendChild(link);
+                link.click();
+            },
+            async RemoveExercise(id) {
+                const response = await ExerciseController.removeExercise(id);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success(response.data.message);
+                this.getClass();
             },
             async AddStudent() {
                 const response = await ClassController.addStudent(this.user.email, this.idClass);

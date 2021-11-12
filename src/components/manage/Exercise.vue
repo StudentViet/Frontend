@@ -1,6 +1,6 @@
 <template>
     <div id="exercise">
-        <Loader v-if="!classRooms"/>
+        <Loader v-if="classRooms == null"/>
         <div class="container" v-else>
             <div class="row">
                 <div class="col-md-12">
@@ -121,8 +121,7 @@
             },
             async getClass() {
                 const response = await ManageController.getClass();
-                console.log(response);
-                this.classRooms = response.data.data.length ? response.data.data : null;
+                this.classRooms = response.data.data.length ? response.data.data : [];
             }
         },
         async mounted() {

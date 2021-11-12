@@ -1,6 +1,6 @@
 <template>
     <div id="setting">
-        <Loader v-if="load"/>
+        <Loader v-if="classRooms == null"/>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -96,21 +96,21 @@
                         <form @submit.prevent="AddExercise()">
                             <div class="group">
                                 <input
-                                    v-model="exercise.description"
+                                    v-model="exercise.name"
                                     type="text"
                                     oninvalid="this.setCustomValidity('Vui lòng chọn một file word')"
                                     oninput="this.setCustomValidity('')"
                                 />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Mô tả</label>
+                                <label>Tên bài tập</label>
                             </div>
 
                             <div class="group">
                                 <input v-model="exercise.date" type="date" id="datePicker" oninput="this.setCustomValidity('')" />
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Ngày nộp</label>
+                                <label>Ngày nộp (Tháng - Ngày - Năm)</label>
                             </div>
 
                             <div class="group">
@@ -148,6 +148,7 @@
     import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 
     import ManageController from "../../controllers/manage.controller.js";
+    import ExerciseController from "../../controllers/exercise.controller.js";
     import Loader from '../loading/loading-v1.vue';
 
     export default {
@@ -156,13 +157,13 @@
             return {
                 name: "",
                 data: "",
-                load: true,
                 classRooms: null,
                 classLink: null,
                 exercise: {
                     classes: [],
-                    description: "",
+                    name: "",
                     date: null,
+                    time: null,
                     file: null,
                 },
                 options: []
@@ -194,22 +195,39 @@
 
                 const response = await ManageController.createClass(this.name, this.data.split(', '));
 
-                if (!response.data.isError) {
-                    this.classLink = `http://localhost:8080/tham-gia-lop-hoc/${response.data.idClass}`
-                    this.$snotify.success(response.data.message);
-                    this.getClass();
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
                     return;
                 }
 
-                this.$snotify.error(response.data.message);
+                this.classLink = `http://localhost:8080/tham-gia-lop-hoc/${response.data.idClass}`
+                this.$snotify.success(response.data.message);
+                this.getClass();
+            },
+            async AddExercise() {
+                if (this.exercise.name == '' || this.exercise.classes == [] || !this.exercise.date || !this.exercise.time || !this.exercise.file) {
+                    this.$snotify.error("Vui lòng nhập đầy đủ thông tin bài tập");
+                    return;
+                }
+
+                const expires_at = `${this.exercise.date} ${this.exercise.time}`
+                const response = await ExerciseController.addExercise(this.exercise.classes.join(','), this.exercise.name, this.exercise.file, expires_at);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success(response.data.message);
+                this.getClass();
+
             },
             async onFileChange(e) {
                 this.exercise.file = e.target.files[0];
             },
             async getClass() {
                 const response = await ManageController.getClass();
-                this.classRooms = response.data.data.length ? response.data.data : null;
-                this.load = false;
+                this.classRooms = response.data.data.length ? response.data.data : [];
                 this.options = [];
                 this.classRooms?.map(x => this.options.push({ id: x.idClass, label: x.name}));
             },
