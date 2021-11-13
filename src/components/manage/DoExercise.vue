@@ -1,11 +1,11 @@
 <template>
     <div id="class">
-        <Loader v-if="classRoom == null" />
+        <Loader v-if="exercises == null" />
         <div class="content" v-else>
             <div class="container">
                 <div style="display: flex; flex-wrap; width: 100%;">
-                    <h2 class="text-center"> Bài tập: {{ classRoom.name }} </h2>
-                    <p style="display: flex;flex-flow: column; justify-content: center;">&nbsp;&nbsp;{{ classRoom.exercises.length }} Bài tập</p>
+                    <h2 class="text-center"> Bài tập </h2>
+                    <p style="display: flex;flex-flow: column; justify-content: center;">&nbsp;&nbsp;{{ exercises.length }} Bài tập</p>
                 </div>
 
                 <hr/>
@@ -24,13 +24,13 @@
                                 <th scope="col">Mô tả</th>
                                 <th scope="col">Thời gian nộp bài</th>
                                 <th scope="col">Tải bài tập</th>
-                                <th scope="col">Nộp bài tập</th>
+                                <th scope="col">Nộp / Thu hồi bài tập</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
                                 scope="row"
-                                v-for="(exercise, index) in classRoom.exercises"
+                                v-for="(exercise, index) in exercises"
                                 v-bind:item="exercise.name"
                                 v-bind:key="exercise.idExam"
                                 v-bind:id="`user-${exercise.idExam}`"
@@ -50,15 +50,16 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ exercise.expires_at | moment("YYYY-MM-DD HH:mm") }}
+                                    {{ exercise.expires_at | moment("DD-MM-YYYY / HH:mm") }}
                                 </td>
                                 <td><a style="cursor: pointer" class="colorPrimary" @click="downloadExercise(exercise.fileUrl)">Tải bài tập</a></td>
-                                <td><a style="cursor: pointer" class="colorPrimary" @click="submitExercise(exercise.idExam)">Nộp bài</a></td>
+                                <td v-if="!exercise.submitted"><a style="cursor: pointer" class="colorPrimary" @click="submitExercise(exercise.idExam)">Nộp bài</a></td>
+                                <td v-else><a style="cursor: pointer" class="colorPrimary" @click="cancelSendExercise(exercise.idExam)">Thu hồi</a></td>
                                 <input id='fileExercise' type='file' hidden @change="onFileChange"/>
                             </tr>
                         </tbody>
                     </table>
-                    <h3 v-if="!classRoom.exercises.length" class="colorGray text-center">Lớp học chưa có bài tập nào</h3>
+                    <h3 v-if="!exercises.length" class="colorGray text-center">Lớp học chưa có bài tập nào</h3>
                 </div>
             </div>
         </div>
@@ -67,7 +68,6 @@
 </template>
 
 <script>
-    import ClassController from "../../controllers/class.controller.js";
     import ExerciseController from "../../controllers/exercise.controller.js";
     import Loader from '../loading/loading-v1.vue';
 
@@ -76,7 +76,7 @@
         data() {
             return {
                 idClass: this.$route.params.id,
-                classRoom: null,
+                exercises: null,
                 file: null,
                 idExam: null
             }
@@ -87,12 +87,12 @@
         watch: {
             '$route': async function() {
                 await this.checkLogged();
-                this.getClass();
+                this.getExercises();
             }
         },
         methods: {
-            async getClass() {
-                const response = await ClassController.getClass(this.idClass);
+            async getExercises() {
+                const response = await ExerciseController.getExerciseByIdClass(this.idClass);
 
                 if (response.data.isError) {
                     this.$snotify.error(response.data.message);
@@ -102,7 +102,7 @@
                     return;
                 }
 
-                this.classRoom = response.data.data[0];
+                this.exercises = response.data.data;
             },
             async downloadExercise(file_name) {
                 const response = await ExerciseController.downloadExercise(file_name);
@@ -125,13 +125,22 @@
                 document.getElementById('fileExercise').click();
                 this.idExam = idExam;
             },
+            async cancelSendExercise(idExam) {
+                const response = await ExerciseController.cancelSendExercise(idExam);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success(response.data.message);
+                this.getExercises();
+            },
             async onFileChange(e) {
                 this.file = e.target.files[0];
 
                 const response = await ExerciseController.uploadFile(this.file, this.idExam);
                 const response2 = await ExerciseController.submitExercise(this.file, this.idExam);
-
-                console.log(response, response2);
 
                 if (response.data.isError) {
                     this.$snotify.error(response.data.message);
@@ -144,6 +153,7 @@
                 }
 
                 this.$snotify.success(response2.data.message);
+                this.getExercises();
             },
             async checkLogged() {
                 const response = await this.$store.dispatch('getUser');
@@ -165,7 +175,7 @@
         },
         async mounted() {
             await this.checkLogged();
-            this.getClass();
+            this.getExercises();
         }
     }
 </script>

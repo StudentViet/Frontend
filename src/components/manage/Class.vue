@@ -85,7 +85,7 @@
                                 <th scope="col">Thời gian nộp bài</th>
                                 <th scope="col">Tải bài tập</th>
                                 <th scope="col">Xóa bài tập</th>
-                                <th scope="col">Chỉnh sửa bài tập</th>
+                                <th scope="col">Xem bài làm của học sinh</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,9 +113,9 @@
                                 <td>
                                     {{ exercise.expires_at | moment("YYYY-MM-DD HH:mm") }}
                                 </td>
-                                <td><a style="cursor: pointer" class="colorPrimary" @click="DownloadExercise(exercise.fileUrl)">Tải bài tập</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="DownloadExercise(exercise.fileUrl)">Tải</a></td>
                                 <td><a style="cursor: pointer" class="colorPrimary" @click="RemoveExercise(exercise.idExam)">Xóa</a></td>
-                                <td><a style="cursor: pointer" class="colorPrimary" @click="EditExercise(exercise.idExam)">sửa</a></td>
+                                <td><router-link :to="'/quan-ly/bai-tap/' + exercise.idExam" style="cursor: pointer" class="colorPrimary">Xem</router-link></td>
                             </tr>
                         </tbody>
                     </table>
@@ -155,7 +155,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -182,7 +181,7 @@
             '$route': async function() {
                 await this.checkLogged();
                 this.getClass();
-                this.doFunctions();
+                // this.doFunctions();
             }
         },
         methods: {
@@ -298,7 +297,7 @@
         async mounted() {
             await this.checkLogged();
             this.getClass();
-            this.doFunctions();
+            // this.doFunctions();
         }
     }
 </script>

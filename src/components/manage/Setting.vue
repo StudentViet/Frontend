@@ -1,11 +1,11 @@
 <template>
     <div id="setting">
         <Loader v-if="classRooms == null"/>
-        <div class="container">
+        <div class="container" v-else>
             <div class="row">
                 <div class="col-md-12">
                     <div class="center-template">
-                        <div v-if="!classRooms" class="mt-3">
+                        <div v-if="!classRooms.length" class="mt-3">
                             <img class="text-center" src="../../assets/images/empty.png" height="250"/>
                             <h2 class="colorGray text-center mt-4">Bạn chưa có lớp học nào, hãy tạo một lớp học</h2>
                             <div class="icon-btn m-auto mt-4" title="Tạo lớp học" data-bs-toggle="modal" data-bs-target="#createClassModal">
@@ -24,12 +24,14 @@
                             </div>
                             <div
                                 class="classRoom mb-5"
+                                style="position: relative"
                                 v-for="(classRoom, index) in classRooms"
                                 v-bind:item="classRoom.name"
                                 v-bind:index="index"
                                 v-bind:key="classRoom.idClass"
                             >
-                                <router-link :to="`/quan-ly/giao-vien/lop-hoc/${classRoom.idClass}`" style="color: black !important">
+                            <a style="cursor: pointer; color: red; position: absolute; top: 10px; right: 0;" @click="DeleteClass(classRoom.idClass)">Xóa</a>
+                                <router-link :to="`/quan-ly/giao-vien/lop-hoc/${classRoom.idClass}`" style="color: black !important;">
                                     <h2> {{ classRoom.name }} </h2>
                                     <p> {{(classRoom.exercises > 0) ? `Lớp học có ${classRoom.exercises} bài tập` : "Lớp học chưa có bài tập nào"}} </p>
                                     <hr/>
@@ -204,6 +206,17 @@
                 this.$snotify.success(response.data.message);
                 this.getClass();
             },
+            async DeleteClass(id) {
+                const response = await ManageController.deleteClass(id);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success(response.data.message);
+                this.getClass();
+            },
             async AddExercise() {
                 if (this.exercise.name == '' || this.exercise.classes == [] || !this.exercise.date || !this.exercise.time || !this.exercise.file) {
                     this.$snotify.error("Vui lòng nhập đầy đủ thông tin bài tập");
@@ -255,3 +268,6 @@
         }
     }
 </script>
+
+<style>
+</style>

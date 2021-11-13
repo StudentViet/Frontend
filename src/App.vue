@@ -45,6 +45,7 @@ body {
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
     line-height: 1.334;
+    overflow-x: hidden;
 }
 
 h5 {
@@ -173,6 +174,10 @@ button {
 
 .colorGray {
     color: rgba(0, 0, 0, 0.54);
+}
+
+.colorBlack {
+    color: black;
 }
 
 .btn-primary {

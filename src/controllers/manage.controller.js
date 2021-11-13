@@ -18,6 +18,13 @@ class ManageController {
             }
         });
     }
+    static deleteClass(id) {
+        return axios.get(`${api}/classRoom/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
 }
 
 export default ManageController;

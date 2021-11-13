@@ -9,7 +9,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav mx-auto navbar-center">
-                            <li v-if="user.role_id == 2"><router-link to="/quan-ly/" class="font-bold">BÀI TẬP</router-link></li>
+                            <li v-if="(user && user.role_id == 2)"><router-link to="/quan-ly/" class="font-bold">BÀI TẬP</router-link></li>
                             <li v-else><router-link to="/quan-ly/giao-vien" class="font-bold">LỚP HỌC</router-link></li>
                             <li><router-link to="/quan-ly/thoi-khoa-bieu/" class="font-bold font-inactive">THỜI KHÓA BIỂU</router-link></li>
                         </ul>

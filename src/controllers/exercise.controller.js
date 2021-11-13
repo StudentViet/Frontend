@@ -10,6 +10,14 @@ class ExerciseController {
         });
     }
 
+    static getExerciseByIdClass(id) {
+        return axios.get(`${api}/classRoom/exercise/show/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
+
     static addExercise(idClasses, nameExercise, file, expires_at) {
         let formData = new FormData();
 
@@ -27,6 +35,16 @@ class ExerciseController {
 
     static downloadExercise(file_name) {
         return axios.get(`${api}/classRoom/exercise/downloadFile/${file_name}`, {
+            responseType: 'arraybuffer',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
+
+    static downloadStudentExercise(file_name) {
+        return axios.get(`${api}/classRoom/exercise/downloadFileExercise/${file_name}`, {
+            responseType: 'arraybuffer',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -35,6 +53,14 @@ class ExerciseController {
 
     static removeExercise(id) {
         return axios.get(`${api}/classRoom/exercise/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+    }
+
+    static cancelSendExercise(idExam) {
+        return axios.post(`${api}/classRoom/exercise/cancelSendExercise`, `idExam=${idExam}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -67,8 +93,8 @@ class ExerciseController {
         });
     }
 
-    static getExercisesByIdClass(id) {
-        return axios.get(`${api}/classRoom/exercise/list/${id}`, {
+    static listStudent(idExercise) {
+        return axios.get(`${api}/classRoom/exercise/listStudent/${idExercise}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
