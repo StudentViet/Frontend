@@ -15,8 +15,8 @@
                                 <li><a href="#" class="colorBlack">Liên hệ</a></li>
                             </ul>
                             <ul class="navbar-nav navbar-right">
-                                <li><router-link to="/dang-nhap" class="font-bold" v-if="!user">ĐĂNG NHẬP</router-link></li>
-                                <li style="margin-left: 15px"><router-link to="/dang-nhap" class="font-bold" v-if="!user">ĐĂNG KÝ</router-link></li>
+                                <li v-if="!user"><router-link to="/dang-nhap" class="font-bold">ĐĂNG NHẬP</router-link></li>
+                                <li style="margin-left: 15px" v-if="!user"><router-link to="/dang-ky" class="font-bold">ĐĂNG KÝ</router-link></li>
                                 <li style="margin-left: 15px"><router-link to="/quan-ly" class="font-bold" v-if="user">QUẢN LÝ</router-link></li>
                             </ul>
                         </div>

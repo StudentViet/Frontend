@@ -52,6 +52,8 @@
                                 <span class="bar"></span>
                                 <label>ID lớp học</label>
                             </div>
+
+                            <button type="submit" class="btn-primary mt-3">Tham gia</button>
                         </form>
                     </div>
                     <div class="modal-footer">

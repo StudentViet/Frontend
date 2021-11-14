@@ -16,7 +16,7 @@
             <div class="mt-5">
                 <h1 class="font-bold text-center">Giới thiệu</h1>
                 <div id="display-flex-wrap" class="mt-5">
-                    <div class="square" style="height: 420px;">
+                    <div class="square" style="height: 450px;">
                         <h2 class="font-bold">Sáng lập</h2>
                         <p>StudentViet được sáng lập bởi nhóm của chúng em:</p>
                         <p><i>Châu Nguyễn Thanh Duy</i></p>
@@ -25,7 +25,7 @@
                         <p>Thuộc trường THCS Nguyễn Chí Thanh, Cao Lãnh.</p>
                         <p>Trong cuộc thi khoa học kĩ thuật THCS 2021-2022.</p>
                     </div>
-                    <div class="square" style="height: 420px;">
+                    <div class="square" style="height: 450px;">
                         <h2 class="font-bold">Tại sao lại tạo trang web này?</h2>
                         <p>Dưới sự ảnh hưởng của dịch bệnh covid-19, việc học tập đến trường ngày càng khó khăn hơn.</p>
                         <p>Do đó chúng ta nên cần các ứng dụng về học tập phù hợp với tình hình hiện tại và ứng dụng học tập đó phải dễ sử dụng và tiện lợi đối với học sinh và giáo viên.</p>
@@ -38,12 +38,12 @@
                 <h1 class="font-bold text-center">Tính năng</h1>
                 <p class="text-center" style="font-size: 23px;"><span class="font-bold colorPrimary">StudentViet</span> có gì vượt trội hơn so với các ứng dụng học tập online khác ?</p>
                 <div id="display-flex-wrap" class="mt-5">
-                    <div class="square" style="height: 270px;">
+                    <div class="square" style="height: 300px;">
                         <h2 class="font-bold">Google meet</h2>
                         <p>Google meet là một trang web học online khác tiện, khá nhanh và không cần phải download về máy, tuy vậy nó vẫn chưa tiện lợi như không chia lớp học, không thể giao bài tập, không thể tạo thời khóa biểu.</p>
                     </div>
                     <h1 id="plus">+</h1>
-                    <div class="square" style="height: 270px;">
+                    <div class="square" style="height: 300px;">
                         <h2 class="font-bold">Microsoft teams</h2>
                         <p>Microsoft teams là một ứng dụng có đầy đủ tính năng như tạo lớp, giao bài tập, tạo thời khóa biểu nhưng nó khá chậm đặc biệt là đối với các máy yếu. Đồng thời còn bị một số tình trạng như mất kết nối và màn hình đen trong giữa lúc học, gây khá nhiều bất tiện.</p>
                     </div>
@@ -87,9 +87,11 @@
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Roboto:wght@300;400&display=swap');
 
 #home {
-    font-family: Roboto !important;
+    font-family: 'PT Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;;
     font-style: normal !important;
     font-weight: normal !important;
     line-height: 33px !important;
@@ -100,7 +102,7 @@
     border-radius: 10px;
     background: #2f94c5;
     color: white;
-    padding: 15px;
+    padding: 25px;
     margin: auto;
 }
 
@@ -167,9 +169,9 @@
     }
 }
 
-@media (max-width: 305px) {
+@media (max-width: 457px) {
     #home .square {
-        height: 470px !important;
+        height: 100% !important;
     }
 }
 </style>
