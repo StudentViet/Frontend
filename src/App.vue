@@ -15,11 +15,15 @@ export default {
             start: true
         }
     },
+    created () {
+        document.title = 'StudentViet - ' + this.$route.meta.title;
+    },
     components: {
         Loader
     },
     watch: {
         '$route' () {
+            document.title = 'StudentViet - ' + this.$route.meta.title;
             this.displayLoader();
         }
     },

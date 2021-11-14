@@ -58,6 +58,11 @@
                         <small class="col d-sm-none text-center text-muted">Thứ 2</small>
                         <span class="col-1"></span>
                     </h5>
+
+                    <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn Toán <br/> <br/>
+                        7:30 am
+                    </a>
                 </div>
                 <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate">
                     <h5 class="row align-items-center">
@@ -100,8 +105,41 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mb-5" style="padding: 10px">
-                        <form @submit.prevent="AddSchedule()">
+                        <form @submit.prevent="addSchedule()">
+                            <div class="mt-3">
+                                <treeselect class="mt-2" v-model="createSchedule.class" :multiple="false" :options="options" placeholder="Chọn lớp học..." />
+                            </div>
 
+                            <div class="mt-3">
+                                <treeselect class="mt-2" v-model="createSchedule.day" :multiple="false" :options="dayOptions" placeholder="Chọn ngày học..." />
+                            </div>
+
+                            <div class="mt-3">
+                                <treeselect class="mt-2" v-model="createSchedule.period" :multiple="false" :options="periodOptions" placeholder="Chọn tiết học..." />
+                            </div>
+
+                            <div class="group">
+                                <input v-model="createSchedule.subject" type="text" oninput="this.setCustomValidity('')" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Môn học</label>
+                            </div>
+
+                            <div class="group">
+                                <input v-model="createSchedule.time" type="time" oninput="this.setCustomValidity('')" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Thời gian học</label>
+                            </div>
+
+                            <div class="group">
+                                <input v-model="createSchedule.link" type="text" oninput="this.setCustomValidity('')" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Link học</label>
+                            </div>
+
+                            <button type="submit" class="btn-primary mt-3">Tạo</button>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -229,21 +267,54 @@
 </template>
 
 <script>
+    import Treeselect from '@riophae/vue-treeselect';
+    import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+
     import Loader from '../loading/loading-v1.vue';
+    import ManageController from "../../controllers/manage.controller.js";
+    import ScheduleController from "../../controllers/schedule.controller.js";
 
     export default {
         name: 'Schedule',
         data() {
             return {
-                isTeacher: null
+                isTeacher: null,
+                classRooms: null,
+                createSchedule: {
+                    class: null,
+                    day: null,
+                    period: null,
+                    subject: null,
+                    time: null,
+                    link: null
+                },
+                schedule: {},
+                options: [],
+                periodOptions: [
+                    { id: 1, label: "Tiết 1" },
+                    { id: 2, label: "Tiết 2" },
+                    { id: 3, label: "Tiết 3" },
+                    { id: 4, label: "Tiết 4" },
+                    { id: 5, label: "Tiết 5" },
+                ],
+                dayOptions: [
+                    { id: 2, label: "Thứ 2" },
+                    { id: 3, label: "Thứ 3" },
+                    { id: 4, label: "Thứ 4" },
+                    { id: 5, label: "Thứ 5" },
+                    { id: 6, label: "Thứ 6" },
+                    { id: 7, label: "Thứ 7" },
+                ]
             }
         },
         components: {
-            Loader
+            Loader,
+            Treeselect
         },
         watch: {
             '$route': async function () {
                 await this.checkLogged();
+                this.getClass();
             }
         },
         methods: {
@@ -258,10 +329,35 @@
                 }
 
                 this.isTeacher = (response.role_id == 1);
+            },
+            async getClass() {
+                const response = await ManageController.getClass();
+                this.classRooms = response.data.data.length ? response.data.data : [];
+                this.options = [];
+                // console.log(response);
+                this.classRooms?.map(x => this.options.push({ id: x.idClass, label: x.name}));
+                // this.classRooms?.map(x => this.schedule[x.schedule.day] = x.schedule);
+            },
+            async addSchedule() {
+                if (!this.createSchedule.class || !this.createSchedule.day || !this.createSchedule.period || !this.createSchedule.subject || !this.createSchedule.time || !this.createSchedule.link) {
+                    this.$snotify.error("Vui lòng nhập đầy đủ thông tin thời khóa biểu");
+                    return;
+                }
+                const response = await ScheduleController.addSchedule(this.createSchedule.class, this.createSchedule.day, this.createSchedule.period, this.createSchedule.subject, this.createSchedule.time, this.createSchedule.link);
+
+                if (response.data.isError) {
+                    this.$snotify.error(response.data.message);
+                    return;
+                }
+
+                this.$snotify.success(response.data.message);
+
+                this.getClass();
             }
         },
         async mounted() {
             await this.checkLogged();
+            this.getClass();
         }
     }
 </script>

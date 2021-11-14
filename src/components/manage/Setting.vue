@@ -30,7 +30,7 @@
                                 v-bind:index="index"
                                 v-bind:key="classRoom.idClass"
                             >
-                            <a style="cursor: pointer; color: red; position: absolute; top: 10px; right: 0;" @click="DeleteClass(classRoom.idClass)">Xóa</a>
+                            <a style="cursor: pointer; color: red; position: absolute; top: 10px; right: 0;" @click="deleteClass(classRoom.idClass)">Xóa</a>
                                 <router-link :to="`/quan-ly/giao-vien/lop-hoc/${classRoom.idClass}`" style="color: black !important;">
                                     <h2> {{ classRoom.name }} </h2>
                                     <p> {{(classRoom.exercises > 0) ? `Lớp học có ${classRoom.exercises} bài tập` : "Lớp học chưa có bài tập nào"}} </p>
@@ -51,7 +51,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mb-5" style="padding: 10px">
-                        <form @submit.prevent="CreateClass()">
+                        <form @submit.prevent="createClass()">
                             <div class="group">
                                 <input
                                     v-model="name"
@@ -95,7 +95,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mb-5" style="padding: 10px">
-                        <form @submit.prevent="AddExercise()">
+                        <form @submit.prevent="addExercise()">
                             <div class="group">
                                 <input
                                     v-model="exercise.name"
@@ -186,16 +186,17 @@
                 const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return regex.test(String(email).toLowerCase());
             },
-            async CreateClass() {
+            async createClass() {
                 let error = false, self = this;
-                this.data.split(', ').map(x => { if (!self.ValidateEmail(x)) error = true });
+                this.data.replaceAll(' ', '');
+                this.data.split(',').map(x => error = !self.ValidateEmail(x) );
 
                 if (error && this.data.length) {
                     this.$snotify.error("Định dạng email thêm học sinh của bạn không hợp lệ");
                     return;
                 }
 
-                const response = await ManageController.createClass(this.name, this.data.split(', '));
+                const response = await ManageController.createClass(this.name, this.data.split(','));
 
                 if (response.data.isError) {
                     this.$snotify.error(response.data.message);
@@ -206,7 +207,7 @@
                 this.$snotify.success(response.data.message);
                 this.getClass();
             },
-            async DeleteClass(id) {
+            async deleteClass(id) {
                 const response = await ManageController.deleteClass(id);
 
                 if (response.data.isError) {
@@ -217,7 +218,7 @@
                 this.$snotify.success(response.data.message);
                 this.getClass();
             },
-            async AddExercise() {
+            async addExercise() {
                 if (this.exercise.name == '' || this.exercise.classes == [] || !this.exercise.date || !this.exercise.time || !this.exercise.file) {
                     this.$snotify.error("Vui lòng nhập đầy đủ thông tin bài tập");
                     return;

@@ -135,7 +135,6 @@
                     return;
                 }
 
-                console.log(response.data.data);
                 this.exercises = response.data.data;
             }
         },

@@ -113,8 +113,8 @@
                                 <td>
                                     {{ exercise.expires_at | moment("YYYY-MM-DD HH:mm") }}
                                 </td>
-                                <td><a style="cursor: pointer" class="colorPrimary" @click="DownloadExercise(exercise.fileUrl)">Tải</a></td>
-                                <td><a style="cursor: pointer" class="colorPrimary" @click="RemoveExercise(exercise.idExam)">Xóa</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="downloadExercise(exercise.fileUrl)">Tải</a></td>
+                                <td><a style="cursor: pointer" class="colorPrimary" @click="removeExercise(exercise.idExam)">Xóa</a></td>
                                 <td><router-link :to="'/quan-ly/bai-tap/' + exercise.idExam" style="cursor: pointer" class="colorPrimary">Xem</router-link></td>
                             </tr>
                         </tbody>
@@ -181,7 +181,6 @@
             '$route': async function() {
                 await this.checkLogged();
                 this.getClass();
-                // this.doFunctions();
             }
         },
         methods: {
@@ -198,7 +197,7 @@
 
                 this.classRoom = response.data.data[0];
             },
-            async DownloadExercise(file_name) {
+            async downloadExercise(file_name) {
                 const response = await ExerciseController.downloadExercise(file_name);
 
                 if (response.data.isError) {
@@ -215,7 +214,7 @@
                 document.body.appendChild(link);
                 link.click();
             },
-            async RemoveExercise(id) {
+            async removeExercise(id) {
                 const response = await ExerciseController.removeExercise(id);
 
                 if (response.data.isError) {
@@ -260,22 +259,6 @@
 
                 this.$snotify.success("Đã copy link tham gia lớp học");
             },
-            async doFunctions() {
-                document.querySelector('.js-check-all').addEventListener('click', function() {
-
-                if ( document.querySelector(this).prop('checked') ) {
-                  document.querySelector('.control--checkbox input[type="checkbox"]').each(function() {
-                    document.querySelector(this).prop('checked', true);
-                  })
-                } else {
-                  document.querySelector('.control--checkbox input[type="checkbox"]').each(function() {
-                    document.querySelector(this).prop('checked', false);
-                  })
-                }
-
-              });
-
-            },
             async checkLogged() {
                 const response = await this.$store.dispatch('getUser');
 
@@ -297,7 +280,6 @@
         async mounted() {
             await this.checkLogged();
             this.getClass();
-            // this.doFunctions();
         }
     }
 </script>

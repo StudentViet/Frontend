@@ -39,7 +39,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body mb-5" style="padding: 10px">
-                        <form @submit.prevent="AddClass()">
+                        <form @submit.prevent="addClass()">
                             <div class="group">
                                 <input
                                     v-model="idClass"
@@ -105,7 +105,7 @@
                     return;
                 }
             },
-            async AddClass() {
+            async addClass() {
                 try {
                     var response = await ClassController.joinClass(this.idClass);
                 } catch (err) {
