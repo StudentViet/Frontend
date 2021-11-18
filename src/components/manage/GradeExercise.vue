@@ -57,7 +57,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <h3 v-if="!exercises.length" class="colorGray text-center">Lớp học chưa có bài tập nào</h3>
+                    <h3 v-if="!exercises.length" class="colorGray text-center">Lớp học chưa có bài làm nào</h3>
                 </div>
             </div>
         </div>

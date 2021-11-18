@@ -1,32 +1,6 @@
-<!--
-                       _oo0oo_
-                      o8888888o
-                      88" . "88
-                      (| -_- |)
-                      0\  =  /0
-                    ___/`---'\___
-                  .' \\|     |// '.
-                 / \\|||  :  |||// \
-                / _||||| -:- |||||- \
-               |   | \\\  -  /// |   |
-               | \_|  ''\---/''  |_/ |
-               \  .-\__  '-'  ___/-. /
-             ___'. .'  /--.--\  `. .'___
-          ."" '<  `.___\_<|>_/___.' >' "".
-         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-         \  \ `_.   \_ __\ /__ _/   .-` /  /
-     =====`-.____`.___ \_____/___.-`___.-'=====
-                       `=---='
-
-
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    CẦU TRỜI CẦU PHẬT HÃY GIÚP CODE CON ÍT BUGS
- -->
-
 <template>
     <div id="schedule">
-        <Loader v-if="isTeacher == null" />
+        <Loader v-if="classRooms == null" />
         <div class="mt-5 container-fluid">
             <header>
                 <h1 class="text-center">TUẦN NÀY</h1>
@@ -66,10 +40,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
                 <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate">
@@ -84,10 +58,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
                 <div class="day col-sm p-2 border-left-0 border-top-0 text-truncate">
@@ -102,10 +76,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
                 <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
@@ -120,10 +94,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
                 <div class="day col-sm p-2 border-left-0 border-top-0 text-truncate ">
@@ -138,10 +112,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
                 <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
@@ -156,10 +130,10 @@
                         v-bind:index="index"
                         v-bind:key="period.idSchedule"
                     >
-                    <router-link :to="period.link" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
-                        {{ period.subject }} <br/> <br/>
-                        {{ period.time }}
-                    </router-link>
+                    <a :href="period.link" target="_blank" v-if="period.subject" class="event-div event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-info text-white" :draggable="isTeacher">
+                        Môn: {{ period.subject }} <br/> <br/>
+                        Giờ: {{ period.time }}
+                    </a>
                     </div>
                 </div>
             </div>
@@ -288,22 +262,16 @@
                 const response = await ManageController.getClass();
                 this.classRooms = response.data.data.length ? response.data.data : [];
                 this.options = [];
+                this.schedule = { '2': [], '3': [], '4': [], '5': [], '6': [], '7': [] };
                 this.classRooms?.map(x => this.options.push({ id: x.idClass, label: x.name}));
                 this.classRooms?.map(x => x.schedule.map(a => this.schedule[a.day].push(a)));
 
-                if (!this.classRooms) return;
-
                 Object.keys(this.schedule).map(x => {
-                    for (let i = 1; i <= 7; ++i) {
-                        if (!(this.schedule[x].find(a => { return a.period == i })))
+                    for (let i = 1; i <= this.periodOptions.length; ++i)
+                        if (!(this.schedule[x].find(a => a.period == i)))
                             this.schedule[x].push({ period: i });
-                    }
                 });
-                // Object.keys(this.schedule).map(x => this.schedule[x].map(a => {
-                //     for (let i = 1; i < 7; ++i)
-                //         if (a.period != i) this.schedule[x].push({ period: i });
-                // }));
-                Object.keys(this.schedule).map(x => this.schedule[x].sort((a,b) => { return Number(a.period) - Number(b.period) }));
+                Object.keys(this.schedule).map(x => this.schedule[x].sort((a,b) => Number(a.period) - Number(b.period)));
             },
             async addSchedule() {
                 if (!this.createSchedule.class || !this.createSchedule.day || !this.createSchedule.period || !this.createSchedule.subject || !this.createSchedule.time || !this.createSchedule.link) {
@@ -348,6 +316,7 @@
 
                 function dragOver(e) {
                     e.preventDefault();
+                    this.style.border = "2px dashed gray";
                 }
 
                 function dragEnter() {
@@ -355,11 +324,12 @@
                 }
 
                 function dragLeave() {
-
+                    this.style.border = "none";
                 }
 
                 function dragDrop() {
                     this.appendChild(draggable);
+                    this.style.border = "none";
                 }
             }
         },
